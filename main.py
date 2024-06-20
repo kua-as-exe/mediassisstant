@@ -35,7 +35,7 @@ def handleTranscribeAsset(item: ItemModel, asset: AssetModel):
     return
   
   model = cli.askChoice("Select Whisper model", [
-    "base", "normal", "large"
+    "base", "medium", "large"
   ])
   lang = cli.askChoice("Select language", [
    "english", "spanish"
