@@ -2,7 +2,7 @@ import typer
 from rich import print as rprint
 import os
 
-from src.app.usecases.ClassUseCases import *
+from app.usecases.ItemUseCases import *
 
 app = typer.Typer()
 
@@ -11,9 +11,9 @@ dataPath = "./.data"
 if not os.path.exists(dataPath):
   os.mkdir(dataPath)
 
-classUseCases = ClassUseCases(
-  classService= ClassService(
-    classRepository= ClassRepository(
+classUseCases = ItemUseCases(
+  classService= ItemService(
+    classRepository= ItemRepository(
       rootPath= dataPath
     )
   )
@@ -36,7 +36,7 @@ def create():
     raise typer.Abort()
 
   classUseCases.registerClass(
-    dto= CreateNewClassDto(
+    dto= ItemNewClassDto(
       name = name,
       slug = slug
     )
@@ -45,7 +45,7 @@ def create():
 @app.command("ls")
 def getAll():
   classes = classUseCases.getAll()
-  rprint(f"Classes: ")
+  rprint(f"Items: ")
   for index, classModel in enumerate(classes):
 
     indexLabel = f"[[blue]{index + 1}[/blue]]"

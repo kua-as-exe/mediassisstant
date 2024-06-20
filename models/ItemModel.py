@@ -2,7 +2,7 @@ from .AudioModel import AudioModel
 from dataclasses import dataclass
 
 @dataclass
-class ClassModel:
+class ItemModel:
   id: str
   name: str
   slug: str

@@ -3,23 +3,23 @@ from rich import print as rprint
 from os.path import join
 from dataclasses import dataclass
 
-from src.app.services.ClassService import *
+from app.services.ItemService import *
 
 @dataclass
-class CreateNewClassDto():
+class ItemNewClassDto():
    name: str
    slug: str
 
-class ClassUseCases():
+class ItemUseCases():
 
-   def __init__(self, classService: ClassService) -> None:
+   def __init__(self, classService: ItemService) -> None:
       self.classService = classService
       pass
 
-   def registerClass(self, dto: CreateNewClassDto ):
+   def registerClass(self, dto: ItemNewClassDto ):
       rprint(f"Creating [blue]{dto.name}[blue]")
 
-      newClass = ClassModel(
+      newClass = ItemModel(
          id= str(uuid.uuid4()),
          name=dto.name,
          slug=dto.slug,

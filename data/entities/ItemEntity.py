@@ -1,9 +1,9 @@
 import jsons
 from dataclasses import dataclass
-from src.data.repositories.ClassRepository import ClassModel
+from data.repositories.ItemRepository import ItemModel
 
 @dataclass
-class ClassEntity():
+class ItemEntity():
   id: str
   slug: str
   name: str
@@ -13,14 +13,14 @@ class ClassEntity():
   
   @staticmethod
   def fromJson(data: any):
-    return ClassEntity(
+    return ItemEntity(
       id= data['id'],
       slug= data['slug'],
       name= data['name'],
     )
 
   def toModel(self):
-    model = ClassModel(
+    model = ItemModel(
       id= self.id,
       slug= self.slug,
       name= self.name,
@@ -28,8 +28,8 @@ class ClassEntity():
     return model
 
   @staticmethod
-  def fromModel(model: ClassModel):
-    return ClassEntity(
+  def fromModel(model: ItemModel):
+    return ItemEntity(
       id= model.id,
       slug= model.name,
       name= model.name

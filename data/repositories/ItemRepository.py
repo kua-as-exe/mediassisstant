@@ -1,9 +1,9 @@
-from src.models.ClassModel import ClassModel
-from src.data.entities.ClassEntity import ClassEntity
+from models.ItemModel import ItemModel
+from data.entities.ItemEntity import ItemEntity
 import os, json, glob
 from os.path import join
 
-class ClassRepository():
+class ItemRepository():
   repositorySlug = "classes"
   __dataFileName = "data.json"
   __audioFileName = "audio.mp3"
@@ -17,44 +17,44 @@ class ClassRepository():
 
     pass
 
-  def __getClassPath(self, model: ClassModel):
+  def __getClassPath(self, model: ItemModel):
     return join(self.path, model.id)
 
-  def __createPathIfNotExists(self, model: ClassModel):
+  def __createPathIfNotExists(self, model: ItemModel):
     classPath = self.__getClassPath(model)
     if not os.path.exists(classPath):
       os.mkdir( classPath )
 
-  def __getDataFilePath(self, model: ClassModel):
+  def __getDataFilePath(self, model: ItemModel):
     classPath = self.__getClassPath(model)
     return join(classPath, self.__dataFileName)
   
-  def __getAudioFilePath(self, model: ClassModel):
+  def __getAudioFilePath(self, model: ItemModel):
     classPath = self.__getClassPath(model)
     return join(classPath, self.__audioFileName)
     
   
-  def save(self, model: ClassModel):
+  def save(self, model: ItemModel):
     self.__createPathIfNotExists(model)
 
     dataPath = self.__getDataFilePath(model)
-    entity = ClassEntity.fromModel(model)
+    entity = ItemEntity.fromModel(model)
 
     with open(dataPath, "w") as dataFile:
       dataFile.write(entity.toJSON()) 
     
     pass
 
-  def getAll(self) -> list[ClassModel]:
+  def getAll(self) -> list[ItemModel]:
     globQuery = join(self.path, "*", self.__dataFileName)
     result = glob.glob(  globQuery )
 
-    models: list[ClassModel] = []
+    models: list[ItemModel] = []
     for file in result:
       try:
         with open(file, "r") as file:
           jsonData = json.load(file)
-          entity = ClassEntity.fromJson(jsonData)
+          entity = ItemEntity.fromJson(jsonData)
           model = entity.toModel()
 
           audioPath = self.__getAudioFilePath(model)
@@ -68,11 +68,11 @@ class ClassRepository():
     
     return models
 
-  def getByid(self, id: str) -> ClassModel:
+  def getByid(self, id: str) -> ItemModel:
     pass
 
-  def getBySlug(self, slug: str) -> ClassModel:
+  def getBySlug(self, slug: str) -> ItemModel:
     pass
 
-  def delete(self, theClass: ClassModel):
+  def delete(self, theClass: ItemModel):
     pass
