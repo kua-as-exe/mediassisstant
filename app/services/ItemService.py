@@ -17,3 +17,6 @@ class ItemService( ):
   def getById(self, id: str):
     return self.classRepository.getByid(id)
 
+  def getAssetsPathById(self, id: str):
+    return self.classRepository.getAssetsPathById(id)
+

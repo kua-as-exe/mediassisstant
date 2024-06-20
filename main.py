@@ -10,6 +10,7 @@ from typing_extensions import Annotated
 
 
 from CLI import CLI
+from app.usecases.AudioUseCases import AudioUseCases
 from app.usecases.ItemUseCases import *
 
 app = typer.Typer()
@@ -20,24 +21,35 @@ FileSystem.createDirIfNotExists(dataPath)
 
 cli = CLI()
 
-classUseCases = ItemUseCases(
-  itemService= ItemService(
+itemService= ItemService(
     itemRepository= ItemRepository(
       rootPath= dataPath
     )
   )
-)
+classUseCases = ItemUseCases( itemService )
+audioUseCases = AudioUseCases( itemService )
 
 def handleTranscribeAsset(item: ItemModel, asset: AssetModel):
 
   if not cli.askConfirm(f" Transcribe file \"{asset.basename}\""):
     return
   
-  choice = cli.askChoice("Select Whisper model", [
+  model = cli.askChoice("Select Whisper model", [
     "base", "normal", "large"
   ])
-  print(choice)
-  cli.askConfirm("Start speeck recognition now?")
+  lang = cli.askChoice("Select language", [
+   "english", "spanish"
+  ])
+  cli.askConfirm("Start speech recognition now?")
+
+  audioUseCases.transcribe(
+    asset = asset,
+    item = item,
+    model = model,
+    language = lang
+  )
+
+  cli.askConfirm("Transcription done")
 
 
 
@@ -70,7 +82,7 @@ def selectAsset( item: ItemModel, asset: AssetModel ):
   if answers['action'] == "transcribe":
     handleTranscribeAsset( item, asset )
     
-  cli.confirm("")
+  cli.askConfirm("")
 
 def selectItem( item: ItemModel ):
 
@@ -136,7 +148,6 @@ def main():
     items = classUseCases.getAll()
 
     cli.clear()
-    rprint("")
     rprint(f"Items: ")
     for index, item in enumerate(items):
       indexLabel = f"[[blue]{index + 1}[/blue]]"

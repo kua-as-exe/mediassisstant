@@ -97,6 +97,10 @@ class ItemRepository():
         return item
     raise RuntimeError("Hola")
 
+  def getAssetsPathById(self, id: str) -> str:
+    model = self.getByid(id)
+    return self.__getAssetsPath(model)
+
   def getBySlug(self, slug: str) -> ItemModel:
     pass
 
