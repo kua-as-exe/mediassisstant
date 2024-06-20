@@ -12,8 +12,8 @@ class ItemNewClassDto():
 
 class ItemUseCases():
 
-   def __init__(self, classService: ItemService) -> None:
-      self.classService = classService
+   def __init__(self, itemService: ItemService) -> None:
+      self.itemService = itemService
       pass
 
    def registerClass(self, dto: ItemNewClassDto ):
@@ -25,8 +25,11 @@ class ItemUseCases():
          slug=dto.slug,
       )
 
-      self.classService.save(newClass)
+      self.itemService.save(newClass)
       rprint(f"[green]Class Saved {newClass.id}[blue]")
    
    def getAll(self):
-      return self.classService.getAll() 
+      return self.itemService.getAll() 
+   
+   def getById(self, id: str):
+      return self.itemService.getById(id)
